@@ -8,13 +8,17 @@ package com.rvg.patterns.abstractFactory;
 public class DaoFactoryProducer {
 
     public static DaoAbstractFactory produce(String factoryType) {
-        DaoAbstractFactory daf = null;
-        if ("xml".equals(factoryType)) {
-            daf = new XMLDaoFactory();
-        } else if ("db".equals(factoryType)) {
-            daf = new DBDaoFactory();
+        if (factoryType == null || factoryType.isEmpty()) {
+            throw new IllegalArgumentException("Factory type must not be null or empty");
         }
 
-        return daf;
+        switch (factoryType.toLowerCase()) {
+            case "xml":
+                return new XMLDaoFactory();
+            case "db":
+                return new DBDaoFactory();
+            default:
+                throw new UnsupportedOperationException("Unsupported factory type: " + factoryType);
+        }
     }
 }
